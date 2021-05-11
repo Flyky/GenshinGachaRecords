@@ -6,22 +6,97 @@
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>EJS Welcome to <%= title %></p>
     <div id="app">
-      <el-upload
-        class="upload-demo"
-        drag
-        action="uploadData"
-        multiple>
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div class="el-upload__tip" slot="tip">只能上传json文件</div>
-      </el-upload>
+      <el-tabs v-model="activeName" @tab-click="handleClick" 
+        tab-position="left" type="border-card" >
+        <el-tab-pane label="查询记录" name="first">
+          <el-card class="query-panel">
+            <el-date-picker
+              v-model="queryConditions.gacha_timeRange"
+              type="datetimerange"
+              align="right"
+              unlink-panels
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              :picker-options="pickerOptions">
+            </el-date-picker>
+
+            <el-select v-model="queryConditions.gacha_type" multiple clearable placeholder="卡池类型">
+              <el-option
+                v-for="item in optionsGachaType"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+
+            <el-select v-model="queryConditions.item_type" multiple clearable placeholder="物品类型">
+              <el-option
+                v-for="item in optionsItemType"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+
+            <el-switch
+              style="display: inline-block"
+              v-model="queryConditions.timeDesc"
+              active-color="#13ce66"
+              inactive-color="#D839D8"
+              active-text="时间倒序"
+              inactive-text="时间正序">
+            </el-switch>
+
+            <el-button icon="el-icon-search" circle @click="queryData"></el-button>
+          </el-card>
+
+          <el-card class="query-table">
+            <el-table
+              :data="tableData"
+              stripe
+              style="width: 100%">
+              <el-table-column
+                prop="gacha_time"
+                label="时间"
+                width="180">
+              </el-table-column>
+              <el-table-column
+                prop="item"
+                label="物品名称"
+                width="180">
+              </el-table-column>
+              <el-table-column
+                prop="rank"
+                label="稀有度">
+              </el-table-column>
+            </el-table>
+          </el-card>
+        </el-tab-pane>
+
+        <el-tab-pane label="上传记录" name="second">
+          <div>
+            <el-upload
+              class="upload-demo"
+              drag
+              action="uploadData"
+              multiple>
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+              <div class="el-upload__tip" slot="tip">只能上传json文件</div>
+            </el-upload>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+      
     </div>
   </body>
   
-  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
   <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.1/index.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
   <script src="javascripts/index.js?v=0.0.1"></script>
 </html>
