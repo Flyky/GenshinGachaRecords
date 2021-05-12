@@ -1,31 +1,32 @@
 const model = require("../model");
 const sequelize = require('sequelize')
+const seqDb = require('../database/db')
 let Genshin = model.Genshin
 
 let queryData = async params => {
-    wheres = {where:{}}
+    let where = 'WHERE 1=1 '
+
     if(params['gacha_timeRange[]']) {
-        wheres['where']['gacha_time'] = {
-            $between: params['gacha_timeRange[]']
-        }
+        where += `AND gacha_time BETWEEN '${params['gacha_timeRange[]'][0]}' AND '${params['gacha_timeRange[]'][1]}' `
     }
     if(params['gacha_type[]']) {
-        wheres['where']['gacha_type'] = {
-            $in: params['gacha_type[]']
-        }
+        let tp = params['gacha_type[]'].toString()
+        where += `AND gacha_type IN (${tp}) `
     }
     if(params['item_type[]']) {
-        wheres['where']['item_type'] = {
-            $in: params['item_type[]']
-        }
+        let it = params['item_type[]'].toString()
+        where += `AND item_type IN (${it}) `
     }
     if(params['timeDesc']) {
-        wheres['order'] = params['timeDesc'] === 'true'? 
-            sequelize.literal('gacha_time DESC'): 
-            sequelize.literal('gacha_time ASC')
+        where += params['timeDesc'] === 'true'? 
+            'ORDER BY gacha_time DESC':
+            'ORDER BY gacha_time ASC'
     }
-    console.log(wheres)
-    let result = await Genshin.findAll(wheres)
+
+    sql = `SELECT * FROM gacha.genshin ${where}`
+    
+    console.log(sql)
+    let result = await seqDb.query(sql, { model: Genshin })
     console.log(result)
     return result
 }
