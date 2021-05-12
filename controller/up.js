@@ -2,9 +2,9 @@ const model = require("../model");
 const seqDb = require('../database/db')
 let Genshin = model.Genshin
 
-let uploadGachaData = function (datas) {
+let uploadGachaData = async function (datas) {
     console.log(datas)
-    const finalGachaTimes = getFinalGachaInfo()
+    const finalGachaTimes = await getFinalGachaInfo()
     let result = []
     
     datas['result'].forEach(ele => {
@@ -43,7 +43,7 @@ let uploadGachaData = function (datas) {
     });
 }
 
-let getFinalGachaInfo = function() {
+let getFinalGachaInfo = async function() {
     let sql = 'SELECT gacha_type , count(*) FROM gacha.genshin GROUP BY gacha_type'
     let result = await seqDb.query(sql, { model: Genshin })
     let r = {}

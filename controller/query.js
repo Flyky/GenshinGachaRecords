@@ -17,6 +17,10 @@ let queryData = async params => {
         let it = params['item_type[]'].toString()
         where += `AND item_type IN (${it}) `
     }
+    if(params['rank[]']) {
+        let rk = params['rank[]'].toString()
+        where += `AND rank IN (${rk}) `
+    }
     if(params['timeDesc']) {
         where += params['timeDesc'] === 'true'? 
             'ORDER BY gacha_time DESC':
@@ -27,7 +31,7 @@ let queryData = async params => {
     
     console.log(sql)
     let result = await seqDb.query(sql, { model: Genshin })
-    console.log(result)
+    // console.log(result)
     return result
 }
 

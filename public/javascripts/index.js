@@ -4,11 +4,16 @@ new Vue({
         return {
             activeName: 'first',
             tableData: [],
+            tableDataOrigin: [],
+            // dataTotal: 0,
+            pagesize: 20,
+            currentPage: 1,
             queryConditions: {
                 timeDesc: true,
                 gacha_type: null,
                 gacha_timeRange: null,
                 item_type: null,
+                rank: null,
             },
             optionsGachaType: [
                 { value: 1, label: '角色池' }, { value: 2, label: '武器池' },
@@ -16,6 +21,9 @@ new Vue({
             ],
             optionsItemType: [
                 { value: 1, label: '角色' }, { value: 2, label: '武器' },
+            ],
+            optionsRank: [
+                { value: 5, label: '⭐⭐⭐⭐⭐' }, { value: 4, label: '⭐⭐⭐⭐' }, { value: 3, label: '⭐⭐⭐' },
             ],
             pickerOptions: {
                 shortcuts: [
@@ -60,10 +68,20 @@ new Vue({
                 params: this.queryConditions
             }).then(res => {
                 console.log(res.data)
-                this.tableData = res['data']['data']
+                this.tableDataOrigin = res['data']['data']
+                this.currentPage = 1
+                this.tableData = this.tableDataOrigin.slice((this.currentPage - 1) * this.pagesize, this.currentPage * this.pagesize)
             }).catch(e => {
 
             })
-        }
+        },
+        handleSizeChange(size) {
+            this.pagesize = size;
+            this.tableData = this.tableDataOrigin.slice((this.currentPage - 1) * this.pagesize, this.currentPage * this.pagesize)
+        },
+        handleCurrentChange(currentPage) {
+            this.currentPage = currentPage;
+            this.tableData = this.tableDataOrigin.slice((this.currentPage - 1) * this.pagesize, this.currentPage * this.pagesize)
+        },
     }
 })
