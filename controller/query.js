@@ -23,8 +23,8 @@ let queryData = async params => {
     }
     if(params['timeDesc']) {
         where += params['timeDesc'] === 'true'? 
-            'ORDER BY gacha_time DESC':
-            'ORDER BY gacha_time ASC'
+            'ORDER BY gacha_time DESC, times_in_total DESC':
+            'ORDER BY gacha_time ASC, times_in_total ASC'
     }
 
     sql = `SELECT * FROM gacha.genshin ${where}`
