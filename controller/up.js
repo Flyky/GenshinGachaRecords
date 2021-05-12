@@ -1,10 +1,12 @@
 const model = require("../model");
+const seqDb = require('../database/db')
 let Genshin = model.Genshin
 
 let uploadGachaData = function (datas) {
     console.log(datas)
+    const finalGachaTimes = getFinalGachaInfo()
     let result = []
-
+    
     datas['result'].forEach(ele => {
         let gacha_type = -1
         if(ele[0] === '301') gacha_type = 1
@@ -13,8 +15,13 @@ let uploadGachaData = function (datas) {
         else if(ele[0] === '100') gacha_type = 0
 
         if(gacha_type === -1) return false
-
         let times_in_total = 1
+
+        if(finalGachaTimes[gacha_type.toString()]) {
+            ele[1].splice(0, finalGachaTimes[gacha_type.toString()])
+            times_in_total += finalGachaTimes[gacha_type.toString()]
+        }
+        
         ele[1].forEach(ele_gacha => {
             result.push({
                 gacha_time: ele_gacha[0],
@@ -34,6 +41,16 @@ let uploadGachaData = function (datas) {
     }).catch((err) => {
         console.log(err);
     });
+}
+
+let getFinalGachaInfo = function() {
+    let sql = 'SELECT gacha_type , count(*) FROM gacha.genshin GROUP BY gacha_type'
+    let result = await seqDb.query(sql, { model: Genshin })
+    let r = {}
+    result.forEach(e => {
+        r[e['gacha_type']] = e['count(*)']
+    })
+    return r
 }
 
 module.exports = {
