@@ -1,5 +1,6 @@
 const model = require("../model");
 const seqDb = require('../database/db')
+const {Sequelize} = require('sequelize')
 let Genshin = model.Genshin
 
 let uploadGachaData = async function (datas) {
@@ -19,7 +20,7 @@ let uploadGachaData = async function (datas) {
 
         if(finalGachaTimes[gacha_type.toString()]) {
             ele[1].splice(0, finalGachaTimes[gacha_type.toString()])
-            times_in_total += finalGachaTimes[gacha_type.toString()]
+            times_in_total = finalGachaTimes[gacha_type.toString()] + 1
         }
         
         ele[1].forEach(ele_gacha => {
@@ -45,9 +46,9 @@ let uploadGachaData = async function (datas) {
 
 let getFinalGachaInfo = async function() {
     let sql = 'SELECT gacha_type , count(*) FROM gacha.genshin GROUP BY gacha_type'
-    let result = await seqDb.query(sql, { model: Genshin })
+    let result = await seqDb.query(sql, {type: Sequelize.SELECT})
     let r = {}
-    result.forEach(e => {
+    result[0].forEach(e => {
         r[e['gacha_type']] = e['count(*)']
     })
     return r
