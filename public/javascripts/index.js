@@ -83,5 +83,30 @@ new Vue({
             this.currentPage = currentPage;
             this.tableData = this.tableDataOrigin.slice((this.currentPage - 1) * this.pagesize, this.currentPage * this.pagesize)
         },
+
+        rankNumToStars(n) {
+            if(n === 3) return '⭐⭐⭐'
+            if(n === 4) return '⭐⭐⭐⭐'
+            if(n === 5) return '⭐⭐⭐⭐⭐'
+            return n
+        },
+        gachaTypeNumToStrings(n) {
+            if(n === 0) return '新手池'
+            if(n === 1) return '角色池'
+            if(n === 2) return '武器池'
+            if(n === 3) return '常驻池'
+            return n
+        },
+        itemTypeToTableColor({row, column, rowIndex, columnIndex}) {
+            if (row.item_type===1 && columnIndex === 1) {
+                return 'color: #007a99'
+            } 
+            if(row.item_type===2 && columnIndex === 1) {
+                return 'color: #ff751a'
+            }
+        }
+    },
+    computed: {
+
     }
 })

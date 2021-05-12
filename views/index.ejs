@@ -64,24 +64,38 @@
 
           <el-card class="query-table">
             <el-table
-              height="600px"
+              height="calc(100vh - 280px)"
               :data="tableData"
               stripe
-              style="width: 100%">
+              style="width: 100%"
+              :cell-style="itemTypeToTableColor">
               <el-table-column
                 prop="gacha_time"
                 label="时间"
-                width="180">
+                width="210">
               </el-table-column>
               <el-table-column
                 prop="item"
                 label="物品名称"
                 width="180">
               </el-table-column>
+
               <el-table-column
                 prop="rank"
                 label="稀有度">
+                <template slot-scope="scope">
+                  {{ rankNumToStars(scope.row.rank) }}
+                </template>
               </el-table-column>
+
+              <el-table-column
+                prop="gacha_type"
+                label="卡池类别">
+                <template slot-scope="scope">
+                  {{ gachaTypeNumToStrings(scope.row.gacha_type) }}
+                </template>
+              </el-table-column>
+
             </el-table>
 
             <div>
