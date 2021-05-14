@@ -5,16 +5,20 @@ const querying = require('../controller/query')
 
 router.get('/', async (ctx, next) => {
   await ctx.render('index', {
-    title: 'Hello Koa 2!'
+    title: 'GenshinGachaRecords'
   })
 })
 
 router.post('/uploadData', async (ctx, next) => {
-  const file = ctx.request.files.file
-  console.log(file)
-  let gacha_datas = JSON.parse(fs.readFileSync(file.path))
-  await ups.uploadGachaData(gacha_datas)
-  ctx.body = {"code": 200}
+  if(ctx.request.body.pwd !== "123456") 
+    ctx.body = {"code": 500, "msg": "上传密码错误"}
+  else {
+    const file = ctx.request.files.file
+    console.log(file)
+    let gacha_datas = JSON.parse(fs.readFileSync(file.path))
+    await ups.uploadGachaData(gacha_datas)
+    ctx.body = {"code": 200}
+  }
 })
 
 router.get('/queryData', async (ctx, next) => {

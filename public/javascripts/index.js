@@ -55,7 +55,8 @@ new Vue({
                         }
                     }
                 ]
-            }
+            },
+            uploadPwd: {pwd:null},
         }
     },
     methods: {
@@ -104,6 +105,16 @@ new Vue({
             if(row.item_type===2 && columnIndex === 1) {
                 return 'color: #ff751a'
             }
+        },
+        afterUploadData(response, file, fileList) {
+            if(response.code === 500) 
+                this.$message.error(response.msg);
+
+            if(response.code === 200) 
+                this.$message({
+                    message: '上传完成',
+                    type: 'success'
+                });
         }
     },
     computed: {

@@ -115,11 +115,16 @@
 
         <el-tab-pane label="上传记录" name="second">
           <div>
+            <el-input placeholder="上传密码" v-model="uploadPwd.pwd" 
+              show-password style="width: 220px;"></el-input>
             <el-upload
               class="upload-demo"
               drag
+              :data="uploadPwd"
+              :limit="1"
               action="uploadData"
-              multiple>
+              :multiple="false"
+              :on-success="afterUploadData">
               <i class="el-icon-upload"></i>
               <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
               <div class="el-upload__tip" slot="tip">只能上传json文件</div>
