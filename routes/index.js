@@ -16,8 +16,14 @@ router.post('/uploadData', async (ctx, next) => {
     const file = ctx.request.files.file
     console.log(file)
     let gacha_datas = JSON.parse(fs.readFileSync(file.path))
-    await ups.uploadGachaData(gacha_datas)
-    ctx.body = {"code": 200}
+    let insert_records = await ups.uploadGachaData(gacha_datas)
+
+    if(insert_records.length < 1) {
+      ctx.body = {"code": 500, "msg": "插入数据错误！"}
+    }
+    else {
+      ctx.body = {"code": 200, "records": insert_records}
+    }
   }
 })
 

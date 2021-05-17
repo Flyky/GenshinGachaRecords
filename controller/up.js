@@ -37,11 +37,17 @@ let uploadGachaData = async function (datas) {
     });
 
     console.log(result.length)
-    Genshin.bulkCreate(result).then(r => {
+    let records = []
+    await Genshin.bulkCreate(result).then(r => {
         console.log(r)
+        records = [0,0,0,0]
+        r.forEach(c => {
+            records[c["dataValues"]["gacha_type"]]++
+        })
     }).catch((err) => {
         console.log(err);
     });
+    return records
 }
 
 let getFinalGachaInfo = async function() {

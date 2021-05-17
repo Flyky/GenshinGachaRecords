@@ -110,11 +110,20 @@ new Vue({
             if(response.code === 500) 
                 this.$message.error(response.msg);
 
-            if(response.code === 200) 
+            if(response.code === 200) {
+                let records = response.records
+                let message = `上传完成，共插入${records.reduce((x,y)=>x+y)}条数据<br>`
+                message += records[1] ? `角色池：${records[1]}条; `: ''
+                message += records[2] ? `武器池：${records[2]}条; `: ''
+                message += records[3] ? `常驻池：${records[3]}条; `: ''
+                message += records[0] ? `新手池：${records[0]}条; `: ''
                 this.$message({
-                    message: '上传完成',
+                    dangerouslyUseHTMLString: true,
+                    message: message,
                     type: 'success'
                 });
+            }
+                
         }
     },
     computed: {
