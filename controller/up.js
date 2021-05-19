@@ -3,8 +3,15 @@ const seqDb = require('../database/db')
 const {Sequelize} = require('sequelize')
 let Genshin = model.Genshin
 
-let uploadGachaData = async function (datas) {
-    console.log(datas)
+let uploadGachaData = async function (datas, is_clearDB) {
+    if(is_clearDB) { // 清除表数据
+        await Genshin.destroy({ 
+            where: {}, 
+            truncate: true 
+        }) 
+    }
+
+    // console.log(datas)
     const finalGachaTimes = await getFinalGachaInfo()
     let result = []
     

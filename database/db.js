@@ -13,6 +13,7 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
         idle: 10000, //如果一个线程 10秒内么有被使用过的话，就释放
     },
     logging: true, // 执行过程会log一些SQL的logging，设为false不显示
+    timezone: '+08:00',
 })
 
 //对连接进行测试，查看控制台
