@@ -27,7 +27,8 @@ let queryData = async params => {
             'ORDER BY gacha_time ASC, times_in_total ASC'
     }
 
-    sql = `SELECT * FROM gacha.genshin ${where}`
+    sql = `SELECT DATE_FORMAT(gacha_time, '%Y-%m-%d %H:%i:%s') AS gacha_time,
+     item, item_type, rank, times_in_total, gacha_type FROM gacha.genshin ${where}`
     
     console.log(sql)
     let result = await seqDb.query(sql, { model: Genshin })
