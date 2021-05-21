@@ -13,6 +13,7 @@ let uploadGachaData = async function (datas, is_clearDB) {
 
     // console.log(datas)
     const finalGachaTimes = await getFinalGachaInfo()
+    const finalGuaranteedTimes = await getFinalGuaranteedTimes()
     let result = []
     
     datas['result'].forEach(ele => {
@@ -23,11 +24,14 @@ let uploadGachaData = async function (datas, is_clearDB) {
         else if(ele[0] === '100') gacha_type = 0
 
         if(gacha_type === -1) return false
-        let times_in_total = 1
+        let times_in_total = 1, times_in_guaranteed = 1
 
         if(finalGachaTimes[gacha_type.toString()]) {
             ele[1].splice(0, finalGachaTimes[gacha_type.toString()])
             times_in_total = finalGachaTimes[gacha_type.toString()] + 1
+        }
+        if(finalGuaranteedTimes[gacha_type.toString()]) {
+            times_in_guaranteed = finalGuaranteedTimes[gacha_type.toString()] + 1
         }
         
         ele[1].forEach(ele_gacha => {
@@ -37,9 +41,11 @@ let uploadGachaData = async function (datas, is_clearDB) {
                 item_type: ele_gacha[2] === '角色' ? 1:2,
                 rank: ele_gacha[3],
                 times_in_total: times_in_total,
-                gacha_type: gacha_type
+                gacha_type: gacha_type,
+                times_in_guaranteed: times_in_guaranteed,
             })
             times_in_total++
+            times_in_guaranteed = ele_gacha[3] == 5 ? 1 : times_in_guaranteed + 1
         })
     });
 
@@ -64,6 +70,19 @@ let getFinalGachaInfo = async function() {
     result[0].forEach(e => {
         r[e['gacha_type']] = e['count(*)']
     })
+    return r
+}
+
+let getFinalGuaranteedTimes = async function() {
+    let r = {}
+    const l = [1,2,3,0]
+    for (let index in [1,2,3,0]) {
+        let tp = l[index]
+        let sql = `SELECT times_in_guaranteed FROM gacha.genshin where gacha_type = ${tp} order by times_in_total desc limit 1`
+        let result = await seqDb.query(sql, {type: Sequelize.SELECT, plain: true })
+        if (result) r[tp.toString()] = result['times_in_guaranteed']
+        else r[tp.toString()] = result
+    }
     return r
 }
 

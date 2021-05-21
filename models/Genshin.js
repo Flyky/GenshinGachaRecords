@@ -27,6 +27,11 @@ const Genshin = sequelize.define('genshin', {
     allowNull: false,
     comment: "总次数"
   },
+  times_in_guaranteed: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    comment: "保底内次数"
+  },
   gacha_type: {
     type: Sequelize.INTEGER,
     allowNull: false,
