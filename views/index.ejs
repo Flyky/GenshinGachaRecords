@@ -59,11 +59,16 @@
               inactive-text="时间正序">
             </el-switch>
 
+            <el-checkbox-group v-model="tableColumnViewsCheck" size="mini" style="display: inline-block;">
+              <el-checkbox-button label="total">显示总次数</el-checkbox-button>
+              <el-checkbox-button label="guaranteed">显示保底内次数</el-checkbox-button>
+            </el-checkbox-group>
             <el-button icon="el-icon-search" circle @click="queryData"></el-button>
           </el-card>
 
           <el-card class="query-table">
             <el-table
+              ref="tableMain"
               height="calc(100vh - 280px)"
               :data="tableData"
               stripe
@@ -94,6 +99,22 @@
                 <template slot-scope="scope">
                   {{ gachaTypeNumToStrings(scope.row.gacha_type) }}
                 </template>
+              </el-table-column>
+
+              <el-table-column
+                key="total_times"
+                v-if="tableColumnViews.total"
+                prop="times_in_total"
+                label="总次数（类别区分）"
+                @change="reLayoutTable">
+              </el-table-column>
+
+              <el-table-column
+                key="guaranteed_times"
+                v-if="tableColumnViews.guaranteed"
+                prop="times_in_guaranteed"
+                label="保底内次数"
+                @change="reLayoutTable">
               </el-table-column>
 
             </el-table>

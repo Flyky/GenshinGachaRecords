@@ -57,6 +57,11 @@ new Vue({
                 ]
             },
             uploadPwd: {pwd:null},
+            tableColumnViewsCheck: [],
+            tableColumnViews: {
+                'guaranteed': false,
+                'total': false,
+            },
         }
     },
     methods: {
@@ -124,9 +129,24 @@ new Vue({
                 });
             }
                 
-        }
+        },
+
+        reLayoutTable() {
+            this.$nextTick(() => {
+                this.$refs.tableMain.doLayout()
+            })
+        },
     },
     computed: {
 
+    },
+    watch: {
+        tableColumnViewsCheck(val) {
+            this.tableColumnViews['total'] = val.includes('total') ? true: false
+            this.tableColumnViews['guaranteed'] = val.includes('guaranteed') ? true: false
+            this.$nextTick(() => {
+                this.$refs.tableMain.doLayout();
+              });
+        }
     }
 })
