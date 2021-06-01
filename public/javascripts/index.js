@@ -62,11 +62,18 @@ new Vue({
                 'guaranteed': false,
                 'total': false,
             },
+            groupAnaySwitch: true,
+            tableGroupAnayCha5: [],
+            tableGroupAnayCha4: [],
+            tableGroupAnayArm5: [],
+            tableGroupAnayArm4: [],
+            tableGroupAnayArm3: [],
         }
     },
     methods: {
         handleClick(tab, event) {
             console.log(tab, event);
+            if(tab['name'] === 'third') this.queryDataAnalysis()
         },
         queryData() {
             console.log(this.queryConditions)
@@ -136,6 +143,21 @@ new Vue({
                 this.$refs.tableMain.doLayout()
             })
         },
+
+        queryDataAnalysis() {
+            console.log(123)
+            axios.get('queryData/AnaGroupCount')
+            .then(res => {
+                console.log(res.data)
+                this.tableGroupAnayCha5 = res['data']['data'][0]
+                this.tableGroupAnayCha4 = res['data']['data'][1]
+                this.tableGroupAnayArm5 = res['data']['data'][2]
+                this.tableGroupAnayArm4 = res['data']['data'][3]
+                this.tableGroupAnayArm3 = res['data']['data'][4]
+            }).catch(e => {
+
+            })
+        }
     },
     computed: {
 

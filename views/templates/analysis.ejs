@@ -1,0 +1,98 @@
+<div>
+    <el-card style="width: 40%;">
+        <div slot="header" class="clearfix">
+            <span>物品分组统计</span>
+            <el-switch
+                style="display: inline; float: right"
+                v-model="groupAnaySwitch"
+                active-color="#13ce66"
+                inactive-color="#6699ff"
+                active-text="角色"
+                inactive-text="武器">
+            </el-switch>
+        </div>
+        <div v-show="groupAnaySwitch">
+            <div style="width: 49%;" class="analysis-group-tables-box">
+                <el-table
+                    size="mini" height="calc(100vh - 580px)"
+                    :data="tableGroupAnayCha5">
+                    <el-table-column
+                        prop="name"
+                        label="名称">
+                    </el-table-column>
+                    <el-table-column sortable
+                        prop="count"
+                        label="数量"
+                        width="80">
+                    </el-table-column>
+                </el-table>
+            </div>
+            
+            <div style="display: inline-block; width: 49%;" class="analysis-group-tables-box">
+                <el-table
+                    size="mini" height="calc(100vh - 580px)"
+                    :data="tableGroupAnayCha4">
+                    <el-table-column
+                        prop="name"
+                        label="名称">
+                    </el-table-column>
+                    <el-table-column sortable
+                        prop="count"
+                        label="数量"
+                        width="80">
+                    </el-table-column>
+                </el-table>
+            </div>
+            
+        </div>
+        <div v-show="!groupAnaySwitch">
+            <div style="display: inline-block; width: 33%;" class="analysis-group-tables-box">
+                <el-table
+                    size="mini" height="calc(100vh - 580px)"
+                    :data="tableGroupAnayArm5">
+                    <el-table-column
+                        prop="name"
+                        label="名称">
+                    </el-table-column>
+                    <el-table-column sortable
+                        prop="count"
+                        label="数量"
+                        width="80">
+                    </el-table-column>
+                </el-table>
+            </div>
+            
+            <div style="display: inline-block; width: 32%;" class="analysis-group-tables-box">
+                <el-table
+                    size="mini" height="calc(100vh - 580px)"
+                    :data="tableGroupAnayArm4">
+                    <el-table-column
+                        prop="name"
+                        label="名称">
+                    </el-table-column>
+                    <el-table-column sortable
+                        prop="count"
+                        label="数量"
+                        width="80">
+                    </el-table-column>
+                </el-table>
+            </div>
+
+            <div style="display: inline-block; width: 33%;" class="analysis-group-tables-box">
+                <el-table
+                    size="mini" height="calc(100vh - 580px)"
+                    :data="tableGroupAnayArm3">
+                    <el-table-column
+                        prop="name"
+                        label="名称">
+                    </el-table-column>
+                    <el-table-column sortable
+                        prop="count"
+                        label="数量"
+                        width="80">
+                    </el-table-column>
+                </el-table>
+            </div>
+        </div>
+      </el-card>
+</div>
