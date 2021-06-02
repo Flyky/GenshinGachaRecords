@@ -1,5 +1,5 @@
 <div>
-    <el-card style="width: 40%;">
+    <el-card style="width: 40%; min-width: 450px;">
         <div slot="header" class="clearfix">
             <span>物品分组统计</span>
             <el-switch
@@ -14,7 +14,7 @@
         <div v-show="groupAnaySwitch">
             <div style="width: 49%;" class="analysis-group-tables-box">
                 <el-table
-                    size="mini" height="calc(100vh - 580px)"
+                    size="mini" height="calc(100vh * 0.75)"
                     :data="tableGroupAnayCha5">
                     <el-table-column
                         prop="name"
@@ -30,7 +30,7 @@
             
             <div style="display: inline-block; width: 49%;" class="analysis-group-tables-box">
                 <el-table
-                    size="mini" height="calc(100vh - 580px)"
+                    size="mini" height="calc(100vh * 0.75)"
                     :data="tableGroupAnayCha4">
                     <el-table-column
                         prop="name"
@@ -48,7 +48,7 @@
         <div v-show="!groupAnaySwitch">
             <div style="display: inline-block; width: 33%;" class="analysis-group-tables-box">
                 <el-table
-                    size="mini" height="calc(100vh - 580px)"
+                    size="mini" height="calc(100vh * 0.75)"
                     :data="tableGroupAnayArm5">
                     <el-table-column
                         prop="name"
@@ -64,7 +64,7 @@
             
             <div style="display: inline-block; width: 32%;" class="analysis-group-tables-box">
                 <el-table
-                    size="mini" height="calc(100vh - 580px)"
+                    size="mini" height="calc(100vh * 0.75)"
                     :data="tableGroupAnayArm4">
                     <el-table-column
                         prop="name"
@@ -80,7 +80,7 @@
 
             <div style="display: inline-block; width: 33%;" class="analysis-group-tables-box">
                 <el-table
-                    size="mini" height="calc(100vh - 580px)"
+                    size="mini" height="calc(100vh * 0.75)"
                     :data="tableGroupAnayArm3">
                     <el-table-column
                         prop="name"
