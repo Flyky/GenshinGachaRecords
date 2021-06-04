@@ -84,7 +84,10 @@ new Vue({
     methods: {
         handleClick(tab, event) {
             console.log(tab, event);
-            if(tab['name'] === 'third') this.queryDataAnalysis()
+            if(tab['name'] === 'third') {
+                this.queryDataAnalysis()
+                this.analysisYearMonthData()
+            }
         },
         queryData() {
             console.log(this.queryConditions)
@@ -156,7 +159,6 @@ new Vue({
         },
 
         queryDataAnalysis() {
-            console.log(123)
             axios.get('queryData/AnaGroupCount')
             .then(res => {
                 console.log(res.data)
@@ -165,6 +167,36 @@ new Vue({
                 this.tableGroupAnayArm5 = res['data']['data'][2]
                 this.tableGroupAnayArm4 = res['data']['data'][3]
                 this.tableGroupAnayArm3 = res['data']['data'][4]
+            }).catch(e => {
+
+            })
+        },
+        analysisYearMonthData() {
+            console.log(123)
+            axios.get('queryData/AnaYearMonth')
+            .then(res => {
+                let axisData = res.data.data.xAxisData
+                let series = res.data.data.series
+                var chartAnaYearMonth = echarts.init(document.getElementById('ana-year-month'))
+                var chartAnaYearMonthOption = {
+                    title: {
+                        text: '年月分组数据统计图'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data:['Total', '五星', '常驻池', '角色UP池', '武器池']
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: axisData
+                    },
+                    yAxis: {},
+                    series: series
+                }
+                chartAnaYearMonth.setOption(chartAnaYearMonthOption)
             }).catch(e => {
 
             })

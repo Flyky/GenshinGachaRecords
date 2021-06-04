@@ -46,4 +46,9 @@ router.get('/queryData/AnaGroupCount', async (ctx, next) => {
   ctx.body = { "code": 200, "data": tableData }
 })
 
+router.get('/queryData/AnaYearMonth', async (ctx, next) => {
+  AnaData = await querying.queryAnaYearMonth()
+  ctx.body = { "code": 200, "data": AnaData }
+})
+
 module.exports = router

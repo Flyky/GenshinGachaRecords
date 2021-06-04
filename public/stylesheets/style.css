@@ -11,3 +11,8 @@ a {
   display: inline-block;
   vertical-align: top;
 }
+
+.card-box-inline {
+  display: inline-block;
+  vertical-align: top;
+}
