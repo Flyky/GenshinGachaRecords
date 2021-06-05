@@ -28,8 +28,8 @@ let queryData = async params => {
             'ORDER BY gacha_time ASC, times_in_total ASC'
     }
 
-    sql = `SELECT DATE_FORMAT(gacha_time, '%Y-%m-%d %H:%i:%s') AS gacha_time,
-     item, item_type, rank, times_in_total, gacha_type, times_in_guaranteed FROM gacha.genshin ${where}`
+    sql = `SELECT datetime(gacha_time, 'localtime') AS gacha_time,
+     item, item_type, rank, times_in_total, gacha_type, times_in_guaranteed FROM genshin ${where}`
     
     console.log(sql)
     let result = await seqDb.query(sql, { model: Genshin })
@@ -45,7 +45,7 @@ let queryDataGroupCount = async params => {
     ]
     let result = [];
     for (let index = 0; index < 5; index++) {
-        let sql = `SELECT item AS name, COUNT(item) AS \`count\` FROM gacha.genshin ${wheres[index]} GROUP BY item ORDER BY \`count\` DESC `
+        let sql = `SELECT item AS name, COUNT(item) AS \`count\` FROM genshin ${wheres[index]} GROUP BY item ORDER BY \`count\` DESC `
         let r = await seqDb.query(sql, {type: Sequelize.SELECT })
         result.push(r[0])
     }
@@ -55,21 +55,21 @@ let queryDataGroupCount = async params => {
 
 let queryAnaYearMonth = async params => {
     let sql = `SELECT t1.yy, t1.mm, t1.c_all, t2.c5, t3.c_nm, t4.c_ch, t5.c_arm from 
-    (SELECT YEAR(gacha_time) yy, MONTH(gacha_time) mm, count(*) c_all from gacha.genshin group by yy, mm) as t1
+    (SELECT strftime('%Y',gacha_time, 'localtime') yy, strftime('%m',gacha_time, 'localtime') mm, count(*) c_all from genshin group by yy, mm) as t1
     left join 
-    (SELECT YEAR(gacha_time) y1, MONTH(gacha_time) m1, count(*) c5 FROM gacha.genshin
+    (SELECT strftime('%Y',gacha_time, 'localtime') y1, strftime('%m',gacha_time, 'localtime') m1, count(*) c5 FROM genshin
     WHERE \`rank\` = 5 group by y1, m1) as t2
     on t1.yy=t2.y1 AND t1.mm = t2.m1
     left join 
-    (SELECT YEAR(gacha_time) y2, MONTH(gacha_time) m2, count(*) c_nm FROM gacha.genshin
+    (SELECT strftime('%Y',gacha_time, 'localtime') y2, strftime('%m',gacha_time, 'localtime') m2, count(*) c_nm FROM genshin
     WHERE gacha_type = 3 group by y2, m2) as t3
     on t1.yy=t3.y2 AND t1.mm = t3.m2
     left join 
-    (SELECT YEAR(gacha_time) y3, MONTH(gacha_time) m3, count(*) c_ch FROM gacha.genshin
+    (SELECT strftime('%Y',gacha_time, 'localtime') y3, strftime('%m',gacha_time, 'localtime') m3, count(*) c_ch FROM genshin
     WHERE gacha_type = 1 group by y3, m3) as t4
     on t1.yy=t4.y3 AND t1.mm = t4.m3
     left join 
-    (SELECT YEAR(gacha_time) y4, MONTH(gacha_time) m4, count(*) c_arm FROM gacha.genshin
+    (SELECT strftime('%Y',gacha_time, 'localtime') y4, strftime('%m',gacha_time, 'localtime') m4, count(*) c_arm FROM genshin
     WHERE gacha_type = 2 group by y4, m4) as t5
     on t1.yy=t5.y4 AND t1.mm = t5.m4`
     let result = {

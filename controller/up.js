@@ -64,7 +64,7 @@ let uploadGachaData = async function (datas, is_clearDB) {
 }
 
 let getFinalGachaInfo = async function() {
-    let sql = 'SELECT gacha_type , count(*) FROM gacha.genshin GROUP BY gacha_type'
+    let sql = 'SELECT gacha_type , count(*) FROM genshin GROUP BY gacha_type'
     let result = await seqDb.query(sql, {type: Sequelize.SELECT})
     let r = {}
     result[0].forEach(e => {
@@ -78,7 +78,7 @@ let getFinalGuaranteedTimes = async function() {
     const l = [1,2,3,0]
     for (let index in [1,2,3,0]) {
         let tp = l[index]
-        let sql = `SELECT rank, times_in_guaranteed FROM gacha.genshin where gacha_type = ${tp} order by times_in_total desc limit 1`
+        let sql = `SELECT rank, times_in_guaranteed FROM genshin where gacha_type = ${tp} order by times_in_total desc limit 1`
         let result = await seqDb.query(sql, {type: Sequelize.SELECT, plain: true })
         if (result) {
             // 最后一条数据位五星时，保底内次数设0（上面调用时会+1，即重置保底）
