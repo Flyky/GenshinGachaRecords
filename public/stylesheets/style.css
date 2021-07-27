@@ -16,3 +16,11 @@ a {
   display: inline-block;
   vertical-align: top;
 }
+
+
+@media screen and (max-width: 1000px) {
+  .card-box-inline {
+    width: 100% !important;
+    max-height: 560px !important;
+  }
+}
