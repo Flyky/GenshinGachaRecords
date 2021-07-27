@@ -21,6 +21,9 @@ a {
 @media screen and (max-width: 1000px) {
   .card-box-inline {
     width: 100% !important;
+    /* max-height: 560px !important; */
+  }
+  .card-box-inline .el-table {
     max-height: 560px !important;
   }
 }
