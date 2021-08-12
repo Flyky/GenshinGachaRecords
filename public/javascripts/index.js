@@ -182,11 +182,23 @@ new Vue({
                     title: {
                         text: '年月分组数据统计图'
                     },
+                    dataZoom: [
+                        {   // 这个dataZoom组件，默认控制x轴。
+                            type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                            start: 0,      // 左边在 10% 的位置。
+                            end: 100         // 右边在 60% 的位置。
+                        }
+                    ],
+                    grid: {
+                        top: '12%', left: '3%',
+                        right: '3%', bottom: '12%', containLabel: true
+                    },
                     tooltip: {
                         trigger: 'axis'
                     },
                     legend: {
-                        data:['Total', '五星', '常驻池', '角色UP池', '武器池']
+                        data:['Total', '五星', '常驻池', '角色UP池', '武器池'],
+                        right: 5
                     },
                     xAxis: {
                         type: 'category',
