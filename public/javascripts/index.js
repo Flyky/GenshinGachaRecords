@@ -197,6 +197,9 @@ new Vue({
                     series: series
                 }
                 chartAnaYearMonth.setOption(chartAnaYearMonthOption)
+                window.onresize = function () {
+                    chartAnaYearMonth.resize();
+                }
             }).catch(e => {
 
             })
