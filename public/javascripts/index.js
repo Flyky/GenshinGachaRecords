@@ -179,6 +179,7 @@ new Vue({
             })
         },
         analysisYearMonthData() {
+            const _this = this
             axios.get('queryData/AnaYearMonth')
             .then(res => {
                 let axisData = res.data.data.xAxisData
@@ -215,9 +216,9 @@ new Vue({
                     series: series
                 }
                 chartAnaYearMonth.setOption(chartAnaYearMonthOption)
-                window.onresize = function () {
+                window.addEventListener('resize', function() {
                     chartAnaYearMonth.resize();
-                }
+                })
             }).catch(e => {
 
             })
@@ -233,15 +234,18 @@ new Vue({
                 let result = res.data.data
                 console.log(result)
                 let heatmapOption = {
-                    tooltip: {},
+                    tooltip: {
+                        formatter: function (p) {
+                            return `[${p.data[0]}] ${p.data[1]}次`
+                        }
+                    },
                     visualMap: {
-                        type: 'piecewise',
                         orient: 'horizontal',
                         left: 'center',
                         top: 5
                     },
                     calendar: {
-                        top: 55,
+                        top: 65,
                         left: 30,
                         right: 30,
                         cellSize: ['auto', 13],
@@ -258,9 +262,9 @@ new Vue({
                     }
                 }
                 chartAnaDailyHeatmap.setOption(heatmapOption)
-                window.onresize = function () {
+                window.addEventListener('resize', function() {
                     chartAnaDailyHeatmap.resize();
-                }
+                })
             }).catch(e => {
 
             })
