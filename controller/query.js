@@ -121,8 +121,8 @@ let queryAnaDaily = async params => {
     let result = []
     let queryYear = params['year']
     let whereQueryType = params['gacha_type']? `AND gacha_type = ${params['gacha_type']}`: ''
-    let sql = `SELECT YEAR(gacha_time)yy, MONTH(gacha_time)mm, DAY(gacha_time)dd, COUNT(*)cd FROM gacha.genshin
-    WHERE YEAR(gacha_time) = '${queryYear}' ${whereQueryType}
+    let sql = `SELECT strftime('%Y',gacha_time, 'localtime') yy, strftime('%m',gacha_time, 'localtime') mm, strftime('%D',gacha_time, 'localtime') dd, COUNT(*)cd 
+    FROM genshin WHERE YEAR(gacha_time) = '${queryYear}' ${whereQueryType}
     GROUP BY yy, mm, dd`
 
     let r = await seqDb.query(sql, {type: Sequelize.SELECT })
