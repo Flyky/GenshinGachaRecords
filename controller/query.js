@@ -121,7 +121,7 @@ let queryAnaDaily = async params => {
     let result = []
     let queryYear = params['year']
     let whereQueryType = params['gacha_type']? `AND gacha_type = ${params['gacha_type']}`: ''
-    let sql = `SELECT strftime('%Y',gacha_time, 'localtime') yy, strftime('%m',gacha_time, 'localtime') mm, strftime('%D',gacha_time, 'localtime') dd, COUNT(*)cd 
+    let sql = `SELECT strftime('%Y',gacha_time, 'localtime') yy, strftime('%m',gacha_time, 'localtime') mm, strftime('%d',gacha_time, 'localtime') dd, COUNT(*)cd 
     FROM genshin WHERE strftime('%Y',gacha_time, 'localtime') = '${queryYear}' ${whereQueryType}
     GROUP BY yy, mm, dd`
 
