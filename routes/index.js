@@ -51,4 +51,10 @@ router.get('/queryData/AnaYearMonth', async (ctx, next) => {
   ctx.body = { "code": 200, "data": AnaData }
 })
 
+router.get('/queryData/AnaDailyHeatmap', async (ctx, next) => {
+  params = ctx.query
+  AnaDailyData = await querying.queryAnaDaily(params)
+  ctx.body = { "code": 200, "data": AnaDailyData }
+})
+
 module.exports = router

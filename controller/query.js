@@ -31,7 +31,7 @@ let queryData = async params => {
     sql = `SELECT DATE_FORMAT(gacha_time, '%Y-%m-%d %H:%i:%s') AS gacha_time,
      item, item_type, rank, times_in_total, gacha_type, times_in_guaranteed FROM gacha.genshin ${where}`
     
-    console.log(sql)
+    // console.log(sql)
     let result = await seqDb.query(sql, { model: Genshin })
     // console.log(result)
     return result
@@ -104,7 +104,7 @@ let queryAnaYearMonth = async params => {
     };
     let r = await seqDb.query(sql, {type: Sequelize.SELECT })
     r = r[0]
-    console.log(r)
+    // console.log(r)
     
     r.forEach(e => {
         result.xAxisData.push(''+e.yy+'-'+e.mm)
@@ -117,8 +117,32 @@ let queryAnaYearMonth = async params => {
     return result
 }
 
+let queryAnaDaily = async params => {
+    let result = []
+    let queryYear = params['year']
+    let whereQueryType = params['gacha_type']? `AND gacha_type = ${params['gacha_type']}`: ''
+    let sql = `SELECT YEAR(gacha_time)yy, MONTH(gacha_time)mm, DAY(gacha_time)dd, COUNT(*)cd FROM gacha.genshin
+    WHERE YEAR(gacha_time) = '${queryYear}' ${whereQueryType}
+    GROUP BY yy, mm, dd`
+
+    let r = await seqDb.query(sql, {type: Sequelize.SELECT })
+    r = r[0]
+    // console.log(r)
+
+    r.forEach(e => {
+        let m = ''+e.mm
+        let d = ''+e.dd
+        m = m.length == 1? `0${m}`: m
+        d = d.length == 1? `0${d}`: d
+        result.push([`${e.yy}-${m}-${d}`, e.cd])
+    });
+
+    return result
+}
+
 module.exports = {
     queryData: queryData,
     queryDataGroupCount: queryDataGroupCount,
-    queryAnaYearMonth: queryAnaYearMonth
+    queryAnaYearMonth: queryAnaYearMonth,
+    queryAnaDaily: queryAnaDaily
 }
