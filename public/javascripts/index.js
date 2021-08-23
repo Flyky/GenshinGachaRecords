@@ -79,6 +79,11 @@ new Vue({
             tableGroupAnayArm5: [],
             tableGroupAnayArm4: [],
             tableGroupAnayArm3: [],
+
+            queryOnHeatmap: {
+                year: null, gacha_type: null 
+            },
+            optionsYears: [],
         }
     },
     methods: {
@@ -87,6 +92,7 @@ new Vue({
             if(tab['name'] === 'third') {
                 this.queryDataAnalysis()
                 this.analysisYearMonthData()
+                this.analysisDailyData()
             }
         },
         queryData() {
@@ -161,7 +167,7 @@ new Vue({
         queryDataAnalysis() {
             axios.get('queryData/AnaGroupCount')
             .then(res => {
-                console.log(res.data)
+                // console.log(res.data)
                 this.tableGroupAnayCha5 = res['data']['data'][0]
                 this.tableGroupAnayCha4 = res['data']['data'][1]
                 this.tableGroupAnayArm5 = res['data']['data'][2]
@@ -172,7 +178,7 @@ new Vue({
             })
         },
         analysisYearMonthData() {
-            console.log(123)
+            // console.log(123)
             axios.get('queryData/AnaYearMonth')
             .then(res => {
                 let axisData = res.data.data.xAxisData
@@ -209,13 +215,60 @@ new Vue({
                     series: series
                 }
                 chartAnaYearMonth.setOption(chartAnaYearMonthOption)
-                window.onresize = function () {
+                window.addEventListener('resize', function() {
                     chartAnaYearMonth.resize();
-                }
+                })
             }).catch(e => {
 
             })
-        }
+        },
+
+        analysisDailyData() {
+            const _this = this
+            axios.get('queryData/AnaDailyHeatmap',{
+                params: _this.queryOnHeatmap
+            })
+            .then(res => {
+                var chartAnaDailyHeatmap = echarts.init(document.getElementById('dailyHeatmap'))
+                let result = res.data.data
+                console.log(result)
+                let heatmapOption = {
+                    tooltip: {
+                        formatter: function (p) {
+                            return `[${p.data[0]}] ${p.data[1]}次`
+                        }
+                    },
+                    visualMap: {
+                        orient: 'horizontal',
+                        left: 'center',
+                        top: 5
+                    },
+                    calendar: {
+                        top: 65,
+                        left: 30,
+                        right: 30,
+                        cellSize: ['auto', 13],
+                        range: _this.queryOnHeatmap.year,
+                        itemStyle: {
+                            borderWidth: 0.5
+                        },
+                        yearLabel: {show: false}
+                    },
+                    series: {
+                        type: 'heatmap',
+                        coordinateSystem: 'calendar',
+                        data: result
+                    }
+                }
+                chartAnaDailyHeatmap.setOption(heatmapOption)
+                window.addEventListener('resize', function() {
+                    chartAnaDailyHeatmap.resize();
+                })
+            }).catch(e => {
+
+            })
+        },
+
     },
     computed: {
 
@@ -228,5 +281,17 @@ new Vue({
                 this.$refs.tableMain.doLayout();
               });
         }
+    },
+    mounted() {
+        // 初始化热力图年份选择列表
+        let nowYear = new Date().getFullYear()
+        this.queryOnHeatmap.year = ''+nowYear
+        for (let index = nowYear; index >= 2020; index--) {
+            this.optionsYears.push({
+                value: ''+index,
+                label: index
+            })
+        }
+
     }
 })

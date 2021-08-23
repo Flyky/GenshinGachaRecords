@@ -94,9 +94,39 @@
                 </el-table>
             </div>
         </div>
-      </el-card>
+    </el-card>
 
-      <el-card style="width: 55%; min-width: 450px;" class="card-box-inline">
-        <div id="ana-year-month" style="width: 100%;height:400px;"></div>
-      </el-card>
+    <div class="card-box-inline" style="width: 56%; min-width: 450px;">
+        <el-card style="width: 100%;">
+            <div id="ana-year-month" style="width: 100%;height:400px;"></div>
+        </el-card>
+
+        <el-card style="width: 100%;">
+            <div slot="header" class="clearfix">
+                <span>Daily分析热力图</span>
+                <div style="float: right; display: inline;">
+                    <el-select size="mini" v-model="queryOnHeatmap.year" 
+                    placeholder="年份" @change="analysisDailyData()">
+                        <el-option
+                            v-for="item in optionsYears"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
+                    <el-select size="mini" v-model="queryOnHeatmap.gacha_type" 
+                    clearable placeholder="卡池类型" @change="analysisDailyData()">
+                        <el-option
+                            v-for="item in optionsGachaType"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
+                </div>
+            </div>
+
+            <div id="dailyHeatmap" style="width: 100%;height:200px;"></div>
+        </el-card>
+    </div>
 </div>
