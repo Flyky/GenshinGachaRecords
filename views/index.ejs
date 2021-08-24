@@ -68,6 +68,7 @@
 
           <el-card class="query-table">
             <el-table
+              v-loading="loadings.mainTable"
               ref="tableMain"
               height="calc(100vh - 280px)"
               :data="tableData"
