@@ -84,6 +84,9 @@ new Vue({
                 year: null, gacha_type: null 
             },
             optionsYears: [],
+            loadings:{
+                mainTable: false
+            },
 
         }
     },
@@ -97,16 +100,17 @@ new Vue({
             }
         },
         queryData() {
-            console.log(this.queryConditions)
+            this.loadings.mainTable = true
             axios.get('queryData', {
                 params: this.queryConditions
             }).then(res => {
-                console.log(res.data)
+                // console.log(res.data)
                 this.tableDataOrigin = res['data']['data']
                 this.currentPage = 1
                 this.tableData = this.tableDataOrigin.slice((this.currentPage - 1) * this.pagesize, this.currentPage * this.pagesize)
+                this.loadings.mainTable = false
             }).catch(e => {
-
+                this.loadings.mainTable = false
             })
         },
         handleSizeChange(size) {
@@ -232,7 +236,9 @@ new Vue({
             .then(res => {
                 var chartAnaDailyHeatmap = echarts.init(document.getElementById('dailyHeatmap'))
                 let result = res.data.data
-                console.log(result)
+                let max = 0
+                result.forEach(e => max = e[1] > max? e[1]: max)
+                max = Math.ceil(max / 10) * 10
                 let heatmapOption = {
                     tooltip: {
                         formatter: function (p) {
@@ -240,12 +246,15 @@ new Vue({
                         }
                     },
                     visualMap: {
+                        min: 0,
+                        max: max,
+                        calculable: true,
                         orient: 'horizontal',
                         left: 'center',
-                        top: 5
+                        top: 1
                     },
                     calendar: {
-                        top: 65,
+                        top: 70,
                         left: 30,
                         right: 30,
                         cellSize: ['auto', 13],
