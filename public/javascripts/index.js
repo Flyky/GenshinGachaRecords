@@ -241,6 +241,8 @@ new Vue({
                 max = Math.ceil(max / 10) * 10
                 let heatmapOption = {
                     tooltip: {
+                        borderWidth: 3,
+                        extraCssText: 'box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);',
                         formatter: function (p) {
                             return `[${p.data[0]}] ${p.data[1]}次`
                         }
@@ -248,6 +250,7 @@ new Vue({
                     visualMap: {
                         min: 0,
                         max: max,
+                        range: [0, max],
                         calculable: true,
                         orient: 'horizontal',
                         left: 'center',
