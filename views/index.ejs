@@ -32,7 +32,7 @@
               </el-option>
             </el-select>
 
-            <el-select v-model="queryConditions.item_type" multiple clearable placeholder="物品类型">
+            <el-select style="max-width: 170px;" v-model="queryConditions.item_type" multiple clearable placeholder="物品类型">
               <el-option
                 v-for="item in optionsItemType"
                 :key="item.value"
@@ -41,7 +41,7 @@
               </el-option>
             </el-select>
 
-            <el-select v-model="queryConditions.rank" multiple clearable placeholder="稀有度">
+            <el-select style="max-width: 170px;" v-model="queryConditions.rank" multiple clearable placeholder="稀有度">
               <el-option
                 v-for="item in optionsRank"
                 :key="item.value"
@@ -49,6 +49,13 @@
                 :value="item.value">
               </el-option>
             </el-select>
+
+            <el-input
+              style="max-width: 150px;"
+              placeholder="物品名称"
+              v-model="queryConditions.keyword"
+              clearable>
+            </el-input>
 
             <el-switch
               style="display: inline-block"
@@ -166,7 +173,7 @@
   </body>
   
   <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.js"></script>
-  <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.1/index.min.js"></script>
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.1/dist/echarts.min.js"></script>
 

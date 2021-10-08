@@ -4,6 +4,15 @@ const seqDb = require('../database/db')
 let Genshin = model.Genshin
 const {Sequelize} = require('sequelize')
 
+// 判断字符串是否为空/空格/null/undefined
+let isEmptyStr = str => {
+    if(!str) return true
+    if (str == '') return true;
+    let regu = "^[ ]+$";
+    let re = new RegExp(regu);
+    return re.test(str);
+}
+
 let queryData = async params => {
     let where = 'WHERE 1=1 '
 
@@ -21,6 +30,11 @@ let queryData = async params => {
     if(params['rank[]']) {
         let rk = params['rank[]'].toString()
         where += `AND rank IN (${rk}) `
+    }
+    if(params['keyword']) {
+        let kw = params['keyword'].toString()
+        if(!isEmptyStr(kw))
+            where += `AND item LIKE '%${kw}%' `
     }
     if(params['timeDesc']) {
         where += params['timeDesc'] === 'true'? 

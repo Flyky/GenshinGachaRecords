@@ -20,6 +20,7 @@ new Vue({
             pagesize: 20,
             currentPage: 1,
             queryConditions: {
+                keyword: '',
                 timeDesc: true,
                 gacha_type: null,
                 gacha_timeRange: null,
